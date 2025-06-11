@@ -1,0 +1,430 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <title>COW IDENTIFICATION</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        html{
+            scroll-behavior: smooth;
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #2b434d;
+            color: #fff;
+            padding: 10px 10%;
+            position: fixed;
+            height: 60px;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            transition: background-color 0.3s ease;
+        }
+
+        nav div {
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin-right: 30px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+        }
+
+        nav ul li a:hover {
+            color: #ddd;
+        }
+        footer {
+            background-color: #f1f1f1;
+            text-align: center;
+            padding: 10px 10%;
+            bottom: 0;
+            left: 0;
+            right: 0;
+        }
+
+        a {
+            text-decoration: none;
+            color: #333;
+        }
+
+        a:hover {
+            color: #666;
+        }
+
+        body {
+            font-family: Poppins;
+        }
+
+        .container{
+            height: 100vh;
+            width: 100%;
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),url("{% static 'images/t5.jpg' %}");
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .center {
+            text-align: center;
+            margin-top: 150px;
+            width: 50%;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
+        }
+        
+        .center:hover {
+            transform: scale(1.02);
+        }
+        
+        .center h1 {
+            font-size: 30px;
+            color: white;
+            margin-bottom: 15px;
+        }
+        
+        .center p {
+            font-size: 17px;
+            color: white;
+            margin-bottom: 15px;
+        }
+        
+        .center a {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+            flex: 1;
+            min-width: 120px;
+        }
+        
+        .center a:first-of-type {
+            background-color: #28a745;
+            border: 2px solid #28a745;
+        }
+        
+        .center a:first-of-type:hover {
+            background-color: white;
+            color: #28a745;
+        }
+        
+        .center a:last-of-type {
+            background-color: #007bff;
+            border: 2px solid #007bff;
+        }
+        
+        .center a:last-of-type:hover {
+            background-color: white;
+            color: #007bff;
+        }
+        .row{
+            display: flex;
+            flex-wrap: wrap;
+
+        }
+        .box1 {
+            width: 400px;
+            height: 250px;
+            text-align: center;
+            line-height: 24px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 30px auto;
+            max-width: 800px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            backdrop-filter: blur(8px);
+        }
+        
+        .box1 h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .icon{
+            margin-bottom: 10px;
+        }
+
+        #about {
+            background-color: #f0f4f8;
+            padding: 60px 20px;
+            display: flex;
+            justify-content: center;
+        }
+        
+        .about-container {
+            max-width: 800px;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .about-container h1 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .about-container p {
+            font-size: 16px;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        #contact {
+            background-color: #f9fafb;
+            padding: 40px 20px 60px 20px;
+            text-align: center;
+        }
+        
+        #contact h1 {
+            font-size: 32px;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        #contact form {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        #contact input[type="text"],
+        #contact input[type="email"],
+        #contact textarea {
+            width: 100%;
+            padding: 14px 18px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fefefe;
+            transition: border 0.3s ease;
+        }
+        
+        #contact textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+        
+        #contact input:focus,
+        #contact textarea:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        
+        #contact button {
+            padding: 14px;
+            background-color: #4CAF50;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        #contact button:hover {
+            background-color: #45a049;
+        }
+        
+        
+        
+
+        @media (max-width: 600px) {
+            nav {
+                flex-direction: row; 
+                flex-wrap: wrap;    
+                justify-content: space-between;
+                align-items: center;
+                height: 80px;
+            }
+        
+            nav ul {
+                display: flex;
+                flex-direction: row;
+                gap: 15px;
+            }
+        
+            nav ul li {
+                display: inline-block;
+                margin: 0;
+                font-size: medium;
+            }
+
+            nav h2 {
+                font-size: 20px;
+                margin-bottom: 12px;
+            }
+
+
+            .about h2, .predict-img h2 {
+                font-size: 20px;
+            }
+
+            .about p {
+                font-size: 13px;
+            }
+
+            .predict-img img {
+                max-width: 100%;
+            }
+            footer{
+                left: 0;right: 0;;bottom: 0;
+            }
+            .center{
+                width: 95%;
+            }
+            .center h1{
+                font-size: 20px;
+            }
+            .center p {
+                font-size: 15px;
+            }
+            .center a {
+                font-size: 12px;
+
+            }
+
+        }
+
+        
+    </style>
+</head>
+<body>
+    <nav>
+        <div>
+            <h2 style="cursor: pointer;">COW IDENTIFICATION</h2>
+        </div>
+        <div>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'training' %}">Train</a></li>
+                <li><a href="{% url 'testing' %}">Identify</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    {%block content%}
+        <div id="home" class="container">
+            <div class="center">
+                <h1>Welcome to the Cow Identification System</h1>
+                <p>Upload an image of a cow and our machine learning model will identify it by tag, breed, or pattern using AI.</p>
+                <div class="btn-container">
+                    <a href="{% url 'training' %}">Train Now</a>  
+                    <a href="{% url 'testing' %}">Test Now 📖</a>
+                </div>
+            </div>
+        </div>
+        <section id="about">
+            <div class="about-container">
+                <h1>About Cow Identification System</h1>
+                <p>
+                    Our Cow Identification System uses Artificial Intelligence to help recover lost cows. The system is trained with cow images linked to details like the farmer’s name and location. 
+                    If a cow is lost, anyone can upload a photo of it, and the system will search for a match in the trained data.
+                    Once identified, it displays the farmer’s contact information to help reunite the cow with its owner.
+                    <br><br>
+                    This system is especially useful for farmers in rural areas to safeguard their livestock and reduce economic loss.
+                </p>
+            </div>
+        </section>
+        
+        <section id="steps" style="background-color: #f9f9f9; padding: 50px 20px;">
+            <h1 style="text-align: center; margin-bottom: 40px;">Steps to Use the Cow Identification System</h1>
+            <div class="row">
+                <div class="box1">
+                    <i class="fa-solid fa-cloud-arrow-up fa-3x icon"></i>
+                    <h3>Collect and Upload</h3>
+                    <p>Farmers upload cow images along with their name and location using the <strong>Train</strong> section.</p>
+                </div>
+                <div class="box1">
+                    <i class="fa-solid fa-robot fa-3x icon"></i>
+                    <h3>Train the Model</h3>
+                    <p>Click on the <strong>"Train All"</strong> button to let the system learn and store each cow’s unique features.</p>
+                </div>
+                <div class="box1">
+                    <i class="fa-solid fa-search fa-3x icon"></i>
+                    <h3>Search for a Lost Cow</h3>
+                    <p>If a cow is missing, take a photo and go to the <strong>Test</strong> section.</p>
+                </div>
+                <div class="box1">
+                    <i class="fa-solid fa-circle-check fa-3x icon"></i>
+                    <h3>Get Results</h3>
+                    <p>The system compares the image with trained data. If a match is found, it shows the cow’s name, farmer’s name, and location.</p>
+                </div>
+            </div>
+        </section>
+        
+        
+        <section id="contact">
+            <h1>Contact Us</h1>
+            <form action="https://api.web3forms.com/submit" method="POST" onsubmit="return clearForm(this)">
+                <input type="hidden" name="access_key" value="fb8cbc14-88a2-4cac-b790-e0680bd3962f">
+        
+                <input type="text" name="name" placeholder="Your Name" required>
+                <input type="email" name="email" placeholder="Your Email" required>
+                <textarea name="message" placeholder="Your Message" required></textarea>
+        
+                <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+                <button type="submit">Submit Form</button>    
+            </form>
+        </section>
+        
+    {%endblock%}
+
+    <footer>
+       &copy; 2025 Cow Identification System. Built with ❤️ for smart farming.
+    </footer>
+
+    <script>
+        function clearForm(form) {
+            setTimeout(() => {
+                form.reset();
+            }, 100);
+            return true;
+        }
+    </script>
+    
+</body>
+</html>

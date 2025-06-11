@@ -1,0 +1,286 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<head>
+  <meta charset="UTF-8">
+  <title>Cow Training</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f4f4f4;
+    }
+
+    h1 {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 5px;
+    }
+
+    .btn:hover {
+      background-color: #0056b3;
+    }
+
+    .div-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 5%;
+      margin-top: 70px;
+    }
+
+    table {
+      width: 90%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      overflow-x: auto;
+    }
+
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      background-color: #eee;
+    }
+
+    .delete-btn {
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      padding-top: 100px;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.4);
+    }
+
+    .modal-content {
+      background-color: #fff;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 10px;
+    }
+
+    .close {
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      color: #aaa;
+      cursor: pointer;
+    }
+
+    .close:hover {
+      color: black;
+    }
+
+    label {
+      font-weight: bold;
+      margin-top: 10px;
+      display: block;
+    }
+
+    input[type="text"],
+    input[type="file"] {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    input[type="submit"] {
+      background-color: #28a745;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+
+    .message {
+      text-align: center;
+      font-weight: bold;
+      margin: 10px;
+    }
+
+    @media (max-width: 768px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+        width: 100%;
+      }
+
+      thead {
+        display: none;
+      }
+
+      tr {
+        margin-bottom: 15px;
+        background-color: white;
+        border-radius: 8px;
+        padding: 10px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      }
+
+      td {
+        padding: 10px;
+        text-align: right;
+        position: relative;
+      }
+
+      td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        text-align: left;
+        font-weight: bold;
+      }
+
+      .div-flex {
+        flex-direction: column;
+        text-align: center;
+      }
+      .div-flex h1{
+        margin-top: 90px;
+        font-size: 20px;
+      }
+      .btn{
+        padding: 8px 15px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        font-size: 14px;
+        cursor: pointer;
+        margin: 5px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="div-flex">
+    <h1>Training</h1>
+    <div>
+      <button class="btn" onclick="openModal()">Add</button>
+      <form action="{% url 'train' %}" style="display:inline;">
+        <input type="submit" class="btn" value="Train All">
+      </form>
+    </div>
+  </div>
+
+  {% if message %}
+    <p class="message" style="color: green;">{{ message }}</p>
+  {% elif error %}
+    <p class="message" style="color: red;">{{ error }}</p>
+  {% endif %}
+
+  <table>
+    <thead>
+      <tr>
+        <th>Unique ID</th>
+        <th>Name</th>
+        <th>Location</th>
+        <th>Image Path</th>
+        <th style="text-align: center;">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for obj in objs %}
+      <tr>
+        <td data-label="Unique ID">{{ obj.unique_id }}</td>
+        <td data-label="Name">{{ obj.name }}</td>
+        <td data-label="Location">{{ obj.location }}</td>
+        <td data-label="Image Path"><a href="/media/{{ obj.upload }}" target="_blank">{{ obj.upload }}</a></td>
+        <td data-label="Action" style="text-align: center;">
+          <form method="POST" action="{% url 'delete_cow' obj.id %}" onsubmit="return confirm('Are you sure you want to delete this entry?');">
+            {% csrf_token %}
+            <button type="submit" class="delete-btn"><i style="color: #dc3545;" class="fa-solid fa-trash fa-1x"></i></button>
+          </form>
+        </td>
+      </tr>
+      {% empty %}
+      <tr>
+        <td colspan="5">No trained cows found.</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div id="cowModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2>Train a New Cow</h2>
+      <form action="{% url 'upload' %}" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="cowName">Farmer Name:</label>
+        <input type="text" id="cowName" name="name" required>
+
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" required>
+
+        <label for="image">Upload Image:</label>
+        <input type="file" id="image" name="image" accept="image/*" required onchange="previewImage(event)">    
+
+        <input type="submit" class="btn" value="Train">
+      </form>
+
+      <img id="imagePreview" src="#" alt="Image Preview" style="display:none; width: 100%; margin-top: 10px; border-radius: 5px;" />
+    </div>
+  </div>
+
+  <script>
+    function openModal() {
+      document.getElementById("cowModal").style.display = "block";
+    }
+
+    function closeModal() {
+      document.getElementById("cowModal").style.display = "none";
+    }
+
+    window.onclick = function(event) {
+      const modal = document.getElementById("cowModal");
+      if (event.target === modal) {
+        modal.style.display = "none";
+      }
+    };
+
+    function previewImage(event) {
+      const reader = new FileReader();
+      reader.onload = function () {
+        const output = document.getElementById('imagePreview');
+        output.src = reader.result;
+        output.style.display = 'block';
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
+  </script>
+
+</body>
+{% endblock %}

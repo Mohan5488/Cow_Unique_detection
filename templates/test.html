@@ -1,0 +1,186 @@
+{% extends 'index.html' %}
+{% block content %}
+<html>
+<head>
+    <title>Test Cow Image</title>
+    <style>
+        .container_x {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            margin-top: 50px;
+            gap: 40px;
+            height: 77vh;
+        }
+
+        .box {
+            background-color: #f9f9f9;
+            padding: 20px;
+            border-radius: 10px;
+            width: 400px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            height: 500px;
+            position: relative;
+        }
+
+        .box img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .box button {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .box button:hover {
+            background-color: #0056b3;
+        }
+
+        .details p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+
+        .h2 {
+            text-align: center;
+            margin-top: 70px;
+        }
+        #box-button{
+            position: absolute;
+            bottom: 10px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        th, td {
+            text-align: left;
+            padding: 20px;
+            font-size: 16px;
+        }
+        
+        th {
+            background-color: #f0f0f0;
+            width: 40%;
+            font-weight: bold;
+        }
+        
+        td {
+            background-color: #ffffff;
+            color: #555;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        input[type='file'] {
+            width: 100%;
+            padding: 7px;
+            background-color: #f0f0f0;
+            border: 2px dashed #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            color: #333;
+            transition: border-color 0.3s ease;
+        }
+        
+        input[type='file']:hover {
+            border-color: #007bff;
+        }
+        @media (max-width: 768px) {
+            .container_x {
+                flex-direction: column;
+                align-items: center;
+                height: auto;
+            }
+        
+            .box {
+                width: 90%;
+                height: auto;
+                margin-bottom: 20px;
+            }
+        
+            #box-button {
+                position: static;
+                margin-top: 20px;
+            }
+        
+            table {
+                margin-top: 30px;
+            }
+            .h2{
+                margin-top: 90px;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <h2 class="h2">Upload Cow Image for Identification</h2>
+
+    <form method="post" action="{% url 'test' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="container_x">
+            <div class="box">
+                {% if file_url %}
+                    <img src="{{ file_url }}" id="preview" alt="Image Preview">
+                {% else %}
+                    <img id="preview" style="display:none;">
+                {% endif %}
+
+                
+                <div id="box-button">
+                    <input type="file" name="testfile" accept="image/*" required onchange="previewImage(event)">
+                    <br><br>
+                    <button type="submit">Identify Image</button>
+                </div>
+            </div>
+
+            <div class="box details">
+                <h3 style="text-align:center; margin-bottom:30px; margin-top:50px;">Identification Result</h3>
+                <table style="margin-top: 90px;">
+                    <tr>
+                        <th>Unique ID</th>
+                        <td>{{unique_id}}</td>
+                    </tr>
+                    <tr>
+                        <th>Name</th>
+                        <td>{{name}}</td>
+                    </tr>
+                    <tr>
+                        <th>Location</th>
+                        <td>{{location}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        function previewImage(event) {
+            const reader = new FileReader();
+            reader.onload = function () {
+                const output = document.getElementById('preview');
+                output.src = reader.result;
+                output.style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+</body>
+</html>
+{% endblock %}
