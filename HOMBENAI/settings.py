@@ -27,6 +27,9 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['cowdetect.sweya.net']
 
+CSRF_TRUSTED_ORIGINS = ['https://cowdetect.sweya.net']
+
+
 
 # Application definition
 
