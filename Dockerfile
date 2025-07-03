@@ -8,6 +8,12 @@ ENV PYTHONUNBUFFERED 1
 # Set work directory
 WORKDIR /app
 
+# Install system dependencies for OpenCV & Pillow
+RUN apt-get update && apt-get install -y \
+    libgl1 \
+    libglib2.0-0 \
+    && rm -rf /var/lib/apt/lists/*
+    
 # Install dependencies
 COPY requirements.txt /app/
 RUN pip install --upgrade pip \

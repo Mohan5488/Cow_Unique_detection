@@ -25,7 +25,7 @@ SECRET_KEY = "django-insecure-kee9r9qs$h^x6#1-vp73d4mvoxs+8!$f$&q@^j_o@1e2nl8!kt
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['cowdetect.sweya.net']
 
 
 # Application definition
