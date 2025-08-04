@@ -1,13 +1,15 @@
 version: '3.8'
-
 services:
-  web:
-    build: .
+  cow-det-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
     ports:
       - "31253:8000"
+    container_name: cow-det-app
     environment:
       - PYTHONDONTWRITEBYTECODE=1
       - PYTHONUNBUFFERED=1 
